@@ -115,7 +115,7 @@
             position: absolute;
             top: 0;
             left: 50%;
-            width: 180px;
+            width: 220px;
             height: 380px;
             background: linear-gradient(120deg, #f9f5e6 90%, #e7d8b9 100%);
             border: 1.5px solid #bfa77a;
@@ -124,7 +124,7 @@
             opacity: 0;
             pointer-events: none;
             z-index: 10;
-            transform: scale(0.94) translate(-50%, 0px);
+            transform: scale(0.94) translate(-50%, 0);
             transition:
                 opacity 0.8s 0.3s,
                 transform 0.8s cubic-bezier(.77,0,.18,1);
@@ -138,9 +138,6 @@
             font-family: 'Georgia', serif;
             letter-spacing: 0.03em;
             line-height: 1.8;
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 31px, #e7d8b9 32px),
-                repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 8px);
         }
         .envelope.opened .note {
             opacity: 1;
@@ -155,34 +152,31 @@
             letter-spacing: 0.02em;
             line-height: 2.1;
         }
-        .note:after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            border-radius: inherit;
-            background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(200,180,120,0.05) 9px, transparent 12px);
-            opacity: 0.4;
-            z-index: 1;
-        }
 
         /* ====== Responsive ====== */
         @media (max-width: 400px) {
-            .envelope-container, .envelope, .flap {
+            .envelope-container {
                 width: 98vw;
-                min-width: 0;
-                max-width: 340px;
+                height: auto;
             }
             .envelope, .flap {
                 width: 98vw;
-                min-width: 0;
                 max-width: 320px;
             }
             .note {
-                width: 98vw;
-                min-width: 0;
-                max-width: 340px;
-                padding: 24px 8vw 24px 8vw;
+                width: 90vw;
+                max-width: 90vw;
+                height: auto;
+                max-height: 80vh;
+                padding: 24px 5vw 24px 5vw;
+            }
+            /* Scale down the envelope opening slightly */
+            .envelope.opened {
+                transform: translateY(200px);
+            }
+            /* Bring the note up just enough to fully fit */
+            .envelope.opened .note {
+                transform: scale(1) translate(-50%, -350px);
             }
         }
     </style>
@@ -209,7 +203,6 @@
                         <stop offset="60%" stop-color="#fff" stop-opacity="0.0"/>
                     </radialGradient>
                 </defs>
-                <!-- Classic heart shape with waxy outline -->
                 <path
                     d="M32 54
                       Q12 38, 12 24
@@ -218,11 +211,9 @@
                       Q52 38, 32 54
                       Z"
                     fill="url(#waxHeart)" stroke="#a01e3a" stroke-width="2"/>
-                <!-- Heart gloss highlight -->
                 <path
                     d="M24 28 Q32 18, 40 28"
                     fill="none" stroke="url(#waxHeartGloss)" stroke-width="5" opacity="0.5"/>
-                <!-- Deeper shadow for waxy depth -->
                 <ellipse cx="32" cy="46" rx="10" ry="4" fill="#7a1832" opacity="0.18"/>
             </svg>
             <!-- Letter Note -->
@@ -235,8 +226,7 @@
                         I just wanted to remind you <br>
                         how much I love you.<br>
                         It's like a lot a lot. <br>
-                        Das all. <br>
-                        <br>
+                        Das all. <br><br>
                         Love,<br>
                         Your weird coder guy.
                     </p>
