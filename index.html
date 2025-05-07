@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>For My Love</title>
+    <title>For My Lady</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <!-- =========================
+         Envelope & Letter Styles
+    ========================== -->
     <style>
+        /* ====== Base Layout ====== */
         body {
             background: linear-gradient(135deg, #f5f3ee 0%, #e8e3d9 100%);
             min-height: 100vh;
@@ -16,45 +22,70 @@
         }
         .envelope-container {
             perspective: 1200px;
-            width: 340px;
-            height: 240px;
+            width: 380px;
+            height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+
+        /* ====== Envelope ====== */
         .envelope {
             position: relative;
-            width: 320px;
-            height: 220px;
-            background: #f7f2e8;
-            border: 2px solid #d6c7b0;
-            border-radius: 8px;
-            box-shadow: 0 8px 32px rgba(80,60,30,0.12);
+            width: 340px;
+            height: 180px;
+            background: linear-gradient(120deg, #f6ecd7 80%, #e2cfa3 100%);
+            border: 2px solid #bfa77a;
+            border-radius: 4px 4px 14px 14px/6px 6px 24px 24px;
+            box-shadow: 0 8px 32px rgba(80,60,30,0.18), 0 1px 0 #bfa77a inset;
             overflow: visible;
-            transition: box-shadow 0.3s;
+            transition: box-shadow 0.3s, transform 0.8s cubic-bezier(.77,0,.18,1);
+            z-index: 1;
         }
         .envelope.opened {
-            box-shadow: 0 4px 16px rgba(80,60,30,0.08);
+            box-shadow: 0 4px 16px rgba(80,60,30,0.10);
+            transform: translateY(250px);
         }
+
+        /* ====== Envelope Flap (Top) ====== */
         .flap {
             position: absolute;
-            top: -80px;
-            left: 0;
-            width: 320px;
-            height: 120px;
-            background: #f7f2e8;
-            border: 2px solid #d6c7b0;
+            top: -40px;
+            left: -4px;
+            width: 344px;
+            height: 112px;
+            background: linear-gradient(120deg, #f6ecd7 80%, #e2cfa3 100%);
+            border: 2px solid #bfa77a;
             border-bottom: none;
-            border-radius: 12px 12px 80px 80px/60px 60px 0 0;
+            border-radius: 18px 18px 120px 120px/80px 80px 0 0;
             z-index: 2;
             transform-origin: bottom center;
-            transition: transform 1s cubic-bezier(.77,0,.18,1);
+            transition: 
+                transform 1s cubic-bezier(.77,0,.18,1),
+                box-shadow 0.4s,
+                filter 0.4s;
             box-shadow: 0 4px 16px rgba(80,60,30,0.10);
         }
-        .envelope.opened .flap {
-            transform: rotateX(-120deg);
-            box-shadow: none;
+        .flap::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 10px;
+            border-radius: 0 0 12px 12px;
+            background: linear-gradient(to bottom, rgba(191,167,122,0.18), transparent 80%);
+            box-shadow: 0 6px 12px 0 rgba(120,100,60,0.10);
+            z-index: 3;
+            pointer-events: none;
         }
+        .envelope.opened .flap {
+            transform: rotateX(-180deg);
+            box-shadow: 0 2px 8px rgba(80,60,30,0.08);
+            filter: drop-shadow(0 6px 8px rgba(120,100,60,0.10));
+        }
+
+        /* ====== Wax Seal ====== */
         .seal {
             position: absolute;
             left: 50%;
@@ -62,44 +93,80 @@
             transform: translateX(-50%);
             z-index: 3;
             cursor: pointer;
-            transition: box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(120,0,40,0.15);
+            transition: box-shadow 0.2s, opacity 0.4s;
+            background: transparent;
+            border: none;
+            box-shadow: 0 4px 16px 0 rgba(120,0,40,0.18), 0 1px 8px 0 rgba(80,0,30,0.10);
+            border-radius: 50%;
+            padding: 0;
+            outline: none;
         }
         .seal:active {
             box-shadow: 0 1px 2px rgba(120,0,40,0.10);
         }
+        .envelope.opened .seal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+
+        /* ====== Note (Letter) ====== */
         .note {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,250,0.98);
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(80,60,30,0.10);
+            left: 50%;
+            width: 260px;
+            height: 380px;
+            background: linear-gradient(120deg, #f9f5e6 90%, #e7d8b9 100%);
+            border: 1.5px solid #bfa77a;
+            border-radius: 10px 10px 18px 18px/10px 10px 32px 32px;
+            box-shadow: 0 6px 24px rgba(80,60,30,0.13), 0 1px 0 #bfa77a inset;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.8s 0.3s;
+            z-index: 10;
+            transform: scale(0.94) translate(-50%, 0px);
+            transition:
+                opacity 0.8s 0.3s,
+                transform 0.8s cubic-bezier(.77,0,.18,1);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 32px 24px;
-            text-align: center;
-            font-size: 1.25rem;
-            color: #5a3a1b;
+            padding: 48px 36px 40px 36px;
+            text-align: left;
+            font-size: 1.18rem;
+            color: #4b2e0e;
             font-family: 'Georgia', serif;
-            letter-spacing: 0.01em;
-            line-height: 1.6;
+            letter-spacing: 0.03em;
+            line-height: 1.8;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 31px, #e7d8b9 32px),
+                repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 8px);
         }
         .envelope.opened .note {
             opacity: 1;
             pointer-events: auto;
+            transform: scale(1) translate(-50%, -500px);
+            box-shadow: 0 12px 36px rgba(80,60,30,0.18), 0 1px 0 #bfa77a inset;
         }
-        /* Subtle paper texture */
-        .envelope, .flap, .note {
-            background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 8px);
+        .note-content {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            font-size: 1.22rem;
+            color: #3a220a;
+            letter-spacing: 0.02em;
+            line-height: 2.1;
         }
-        /* Responsive */
+        .note:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border-radius: inherit;
+            background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(200,180,120,0.05) 9px, transparent 12px);
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        /* ====== Responsive ====== */
         @media (max-width: 400px) {
             .envelope-container, .envelope, .flap {
                 width: 98vw;
@@ -111,57 +178,80 @@
                 min-width: 0;
                 max-width: 320px;
             }
+            .note {
+                width: 98vw;
+                min-width: 0;
+                max-width: 340px;
+                padding: 24px 8vw 24px 8vw;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- =========================
+         Envelope & Letter Markup
+    ========================== -->
     <div class="envelope-container">
         <div class="envelope" id="envelope">
+            <!-- Top Flap -->
             <div class="flap"></div>
-            <svg class="seal" width="56" height="56" viewBox="0 0 56 56">
+            <!-- Wax Seal -->
+            <svg class="seal" width="64" height="64" viewBox="0 0 64 64">
                 <defs>
-                    <radialGradient id="wax" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#e94e77"/>
-                        <stop offset="80%" stop-color="#b02a50"/>
+                    <radialGradient id="waxHeart" cx="50%" cy="60%" r="60%">
+                        <stop offset="0%" stop-color="#f080a0"/>
+                        <stop offset="60%" stop-color="#e94e77"/>
+                        <stop offset="90%" stop-color="#b02a50"/>
                         <stop offset="100%" stop-color="#7a1832"/>
                     </radialGradient>
+                    <radialGradient id="waxHeartGloss" cx="40%" cy="30%" r="60%">
+                        <stop offset="0%" stop-color="#fff" stop-opacity="0.7"/>
+                        <stop offset="60%" stop-color="#fff" stop-opacity="0.0"/>
+                    </radialGradient>
                 </defs>
-                <!-- Rough heart-shaped wax seal -->
-                <path d="M28 44
-                    Q18 38, 14 30
-                    Q10 22, 18 16
-                    Q24 12, 28 18
-                    Q32 12, 38 16
-                    Q46 22, 42 30
-                    Q38 38, 28 44
-                    Z"
-                    fill="url(#wax)" stroke="#a01e3a" stroke-width="2"/>
-                <!-- Wax texture dots -->
-                <ellipse cx="22" cy="28" rx="2" ry="1" fill="#f080a0" opacity="0.25"/>
-                <ellipse cx="34" cy="32" rx="1.5" ry="1" fill="#fff" opacity="0.18"/>
-                <ellipse cx="30" cy="24" rx="1" ry="0.7" fill="#fff" opacity="0.12"/>
+                <!-- Classic heart shape with waxy outline -->
+                <path
+                    d="M32 54
+                      Q12 38, 12 24
+                      Q12 12, 32 18
+                      Q52 12, 52 24
+                      Q52 38, 32 54
+                      Z"
+                    fill="url(#waxHeart)" stroke="#a01e3a" stroke-width="2"/>
+                <!-- Heart gloss highlight -->
+                <path
+                    d="M24 28 Q32 18, 40 28"
+                    fill="none" stroke="url(#waxHeartGloss)" stroke-width="5" opacity="0.5"/>
+                <!-- Deeper shadow for waxy depth -->
+                <ellipse cx="32" cy="46" rx="10" ry="4" fill="#7a1832" opacity="0.18"/>
             </svg>
+            <!-- Letter Note -->
             <div class="note">
-                <div>
-                    <h2 style="font-family:'Georgia',serif;font-size:1.5em;margin:0 0 1em 0;font-weight:normal;">My Dearest Love,</h2>
+                <div class="note-content">
+                    <h2 style="font-family:'Cormorant Garamond','Georgia',serif;font-size:2em;margin:0 0 1em 0;font-weight:600;">
+                      My Lover Lady,
+                    </h2>
                     <p>
-                        I just wanted to remind you, in the midst of your busy day, how deeply and truly I love you.<br>
-                        You are my heart’s greatest joy, my truest friend, and the light of every morning.<br>
-                        Thank you for being you.<br>
+                        I just wanted to remind you <br>
+                        how much I love you.<br>
+                        It's like a lot a lot. <br>
+                        Das all. <br>
                         <br>
-                        Forever yours,<br>
-                        [Your Name]
+                        Love,<br>
+                        Your weird coding guy.
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    <!-- =========================
+         Envelope Open Script
+    ========================== -->
     <script>
         const envelope = document.getElementById('envelope');
         const seal = document.querySelector('.seal');
         seal.addEventListener('click', () => {
             envelope.classList.add('opened');
-            seal.style.pointerEvents = 'none';
         });
     </script>
 </body>
