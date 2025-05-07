@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>For My Love</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f3ee 0%, #e8e3d9 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .envelope-container {
+            perspective: 1200px;
+            width: 340px;
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .envelope {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            background: #f7f2e8;
+            border: 2px solid #d6c7b0;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(80,60,30,0.12);
+            overflow: visible;
+            transition: box-shadow 0.3s;
+        }
+        .envelope.opened {
+            box-shadow: 0 4px 16px rgba(80,60,30,0.08);
+        }
+        .flap {
+            position: absolute;
+            top: -80px;
+            left: 0;
+            width: 320px;
+            height: 120px;
+            background: #f7f2e8;
+            border: 2px solid #d6c7b0;
+            border-bottom: none;
+            border-radius: 12px 12px 80px 80px/60px 60px 0 0;
+            z-index: 2;
+            transform-origin: bottom center;
+            transition: transform 1s cubic-bezier(.77,0,.18,1);
+            box-shadow: 0 4px 16px rgba(80,60,30,0.10);
+        }
+        .envelope.opened .flap {
+            transform: rotateX(-120deg);
+            box-shadow: none;
+        }
+        .seal {
+            position: absolute;
+            left: 50%;
+            top: 60px;
+            transform: translateX(-50%);
+            z-index: 3;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(120,0,40,0.15);
+        }
+        .seal:active {
+            box-shadow: 0 1px 2px rgba(120,0,40,0.10);
+        }
+        .note {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,250,0.98);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(80,60,30,0.10);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 24px;
+            text-align: center;
+            font-size: 1.25rem;
+            color: #5a3a1b;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.01em;
+            line-height: 1.6;
+        }
+        .envelope.opened .note {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        /* Subtle paper texture */
+        .envelope, .flap, .note {
+            background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 8px);
+        }
+        /* Responsive */
+        @media (max-width: 400px) {
+            .envelope-container, .envelope, .flap {
+                width: 98vw;
+                min-width: 0;
+                max-width: 340px;
+            }
+            .envelope, .flap {
+                width: 98vw;
+                min-width: 0;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope-container">
+        <div class="envelope" id="envelope">
+            <div class="flap"></div>
+            <svg class="seal" width="56" height="56" viewBox="0 0 56 56">
+                <defs>
+                    <radialGradient id="wax" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#e94e77"/>
+                        <stop offset="80%" stop-color="#b02a50"/>
+                        <stop offset="100%" stop-color="#7a1832"/>
+                    </radialGradient>
+                </defs>
+                <!-- Rough heart-shaped wax seal -->
+                <path d="M28 44
+                    Q18 38, 14 30
+                    Q10 22, 18 16
+                    Q24 12, 28 18
+                    Q32 12, 38 16
+                    Q46 22, 42 30
+                    Q38 38, 28 44
+                    Z"
+                    fill="url(#wax)" stroke="#a01e3a" stroke-width="2"/>
+                <!-- Wax texture dots -->
+                <ellipse cx="22" cy="28" rx="2" ry="1" fill="#f080a0" opacity="0.25"/>
+                <ellipse cx="34" cy="32" rx="1.5" ry="1" fill="#fff" opacity="0.18"/>
+                <ellipse cx="30" cy="24" rx="1" ry="0.7" fill="#fff" opacity="0.12"/>
+            </svg>
+            <div class="note">
+                <div>
+                    <h2 style="font-family:'Georgia',serif;font-size:1.5em;margin:0 0 1em 0;font-weight:normal;">My Dearest Love,</h2>
+                    <p>
+                        I just wanted to remind you, in the midst of your busy day, how deeply and truly I love you.<br>
+                        You are my heart’s greatest joy, my truest friend, and the light of every morning.<br>
+                        Thank you for being you.<br>
+                        <br>
+                        Forever yours,<br>
+                        [Your Name]
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const envelope = document.getElementById('envelope');
+        const seal = document.querySelector('.seal');
+        seal.addEventListener('click', () => {
+            envelope.classList.add('opened');
+            seal.style.pointerEvents = 'none';
+        });
+    </script>
+</body>
+</html>
